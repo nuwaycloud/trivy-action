@@ -13,6 +13,8 @@ jobs:
     steps:
       - name: Run ShellCheck
         uses: cfy9/shellcheck-action@v0.0.4
+        with:
+          version: v0.8.0
 
       - name: Generate Semantic Version
         id: tag_version
