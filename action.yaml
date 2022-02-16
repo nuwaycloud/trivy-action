@@ -1,0 +1,19 @@
+name: "Trivy"
+author: "Cloudfy9 <contact@cloudfy9.com>"
+description: "GitHub action to scan docker images for vulnerability issues using trivy."
+inputs:
+  image_name:
+    description: "This input contains the docker image name"
+    required: true
+branding:
+  icon: "terminal"
+  color: "red"
+runs:
+  using: "composite"
+  steps:
+    - name: Run Trivy Scan
+      shell: bash
+      run: ${{ github.action_path }}/trivy.sh
+      env:
+        INPUT_IMAGE_NAME: ${{ inputs.image_name }}
+        ACTION_PATH: ${{ github.action_path }}
