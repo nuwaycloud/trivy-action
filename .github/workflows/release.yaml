@@ -23,6 +23,6 @@ jobs:
           release_name: Release ${{ github.ref }}
           body: |
             Changes in this Release
-            - Added code to perform shell scripting linting
+            - Added action code to scan docker images for vulnerability issues
           draft: false
           prerelease: false
