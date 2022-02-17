@@ -18,14 +18,9 @@ function exitScript()
 #############################################
 function download_trivy()
 {
-    dist=$(tr -s ' \011' '\012' < /etc/issue | head -n 1)
-    check_arch=$(uname -m)
-    echo "[$green+$txtrst] Distribution Name: $dist"
-    echo "[$green+$txtrst] Architecture: ${check_arch}"
     [ -z "${INPUT_VERSION}" ] && exitScript "please pass trivy version with <version> input, exiting..."
-    install_url="https://github.com/aquasecurity/trivy/releases/download/v${INPUT_VERSION}/trivy_${INPUT_VERSION}_Linux-64bit.deb"
-    wget $install_url
-    sudo dpkg -i trivy_${INPUT_VERSION}_Linux-64bit.deb || exitScript "Failed to install trivy version ${INPUT_VERSION}, exiting..."
+    _install_url="https://github.com/aquasecurity/trivy/releases/download/v${INPUT_VERSION}/trivy_${INPUT_VERSION}_Linux-64bit.rpm"
+    rpm -Uvh ${_install_url} || exitScript "Failed to install trivy version ${INPUT_VERSION}, exiting..."
     echo -e "${CYAN}[$SUCCESS] trivy installed ${RESET}"
 }
 
@@ -35,9 +30,26 @@ function download_trivy()
 function scan_image()
 {
   [ -z "${INPUT_IMAGE_NAME}" ] && exitScript "please pass docker image to scan for vulnerabilities, exiting..."
-  /usr/local/bin/trivy image --severity ${INPUT_SEVERITY} ${INPUT_ADDITIONAL_OPTIONS} $INPUT_IMAGE_NAME || exitScript "trivy found vulnerabilities in docker image ${INPUT_IMAGE_NAME}, exiting..."
+  [ ! -z "${INPUT_SEVERITY}" ] && severity="--severity ${INPUT_SEVERITY}"
+  trivy image ${severity} ${INPUT_ADDITIONAL_OPTIONS} $INPUT_IMAGE_NAME || exitScript "trivy found vulnerabilities in docker image ${INPUT_IMAGE_NAME}, exiting..."
   echo -e "${CYAN}[$SUCCESS] trivy scan completed"
   echo -e "${GREEN} Congratulations!!! Trivy found no vulnerability issues. ${RESET}"
+}
+
+#######################################
+##### function to scan filesystem #####
+#######################################
+function scan_filesystem()
+{
+   echo "Inside filesystem function"
+}
+
+###########################################
+##### function to scan git repository #####
+###########################################
+function scan_repository()
+{
+   echo "Inside git repository scan function"
 }
 
 RED='\033[0;31m'
@@ -48,4 +60,17 @@ SUCCESS='\u2714'
 FAILED='\u274c'
 
 download_trivy
-scan_image
+
+case "${INPUT_TARGET}" in
+  "image")
+     scan_image
+     ;;
+  "filesystem")
+     scan_filesystem
+     ;;
+  "repository")
+     scan_repository
+     ;;
+  *)
+     exitScript "Please pass supported target scan e.g. image|repository|filesystem, exiting..."
+esac
