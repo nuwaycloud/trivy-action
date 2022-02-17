@@ -24,13 +24,13 @@ function download_trivy()
     echo -e "${CYAN}[$SUCCESS] trivy installed ${RESET}"
 }
 
-##########################################
-##### function to scan docker images #####
-##########################################
-function scan_images()
+#########################################
+##### function to scan docker image #####
+#########################################
+function scan_image()
 {
-  [ -z "${INPUT_IMAGES}" ] && exitScript "please pass docker image(s) to scan for vulnerability issues, exiting..."
-  trivy $INPUT_IMAGES || exitScript "trivy scan found vulnerabilities in one or more specified docker images, exiting..."
+  [ -z "${INPUT_IMAGE_NAME}" ] && exitScript "please pass docker image to scan for vulnerabilities, exiting..."
+  /usr/local/bin/trivy ${INPUT_ADDITIONAL_OPTIONS} $INPUT_IMAGE_NAME || exitScript "trivy found vulnerabilities in docker image ${INPUT_IMAGE_NAME}, exiting..."
   echo -e "${CYAN}[$SUCCESS] trivy scan completed
   echo -e "${GREEN} Congratulations!!! Trivy found no vulnerability issues. ${RESET}"
 }
@@ -43,4 +43,4 @@ SUCCESS='\u2714'
 FAILED='\u274c'
 
 download_trivy
-scan_images
+scan_image
