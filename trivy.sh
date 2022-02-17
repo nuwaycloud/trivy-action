@@ -31,7 +31,7 @@ function scan_image()
 {
   [ -z "${INPUT_IMAGE_NAME}" ] && exitScript "please pass docker image to scan for vulnerabilities, exiting..."
   /usr/local/bin/trivy ${INPUT_ADDITIONAL_OPTIONS} $INPUT_IMAGE_NAME || exitScript "trivy found vulnerabilities in docker image ${INPUT_IMAGE_NAME}, exiting..."
-  echo -e "${CYAN}[$SUCCESS] trivy scan completed
+  echo -e "${CYAN}[$SUCCESS] trivy scan completed"
   echo -e "${GREEN} Congratulations!!! Trivy found no vulnerability issues. ${RESET}"
 }
 
