@@ -8,7 +8,7 @@ inputs:
   version:
     description: "This input contains the trivy version"
     required: false
-    default: "0.1.6"
+    default: "0.23.0"
   format:
     description: "This input contains the scan output format e.g. table or json"
     required: false
