@@ -53,6 +53,7 @@ jobs:
       with:
         image_name: nginx
         format: "json"
+```
 
 ## Contributing
 We would love you to contribute to `@cfy9/shellcheck-action`, pull requests are welcome! Please see the [CONTRIBUTING.md](CONTRIBUTING.md) for more information.
