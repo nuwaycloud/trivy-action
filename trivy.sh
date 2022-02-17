@@ -19,7 +19,7 @@ function exitScript()
 function download_trivy()
 {
     [ -z "${INPUT_VERSION}" ] && exitScript "please pass trivy version with <version> input, exiting..."
-    install_url="wget https://github.com/aquasecurity/trivy/releases/download/v${INPUT_VERSION}/trivy_${INPUT_VERSION}_Linux-64bit.deb"
+    install_url="https://github.com/aquasecurity/trivy/releases/download/v${INPUT_VERSION}/trivy_${INPUT_VERSION}_Linux-64bit.deb"
     sudo dpkg -i $install_url || exitScript "Failed to install trivy version ${INPUT_VERSION}, exiting..."
     echo -e "${CYAN}[$SUCCESS] trivy installed ${RESET}"
 }
