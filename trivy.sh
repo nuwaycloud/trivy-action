@@ -18,6 +18,7 @@ function exitScript()
 #############################################
 function download_trivy()
 {
+    echo "**** `uname` *****"
     [ -z "${INPUT_VERSION}" ] && exitScript "please pass trivy version with <version> input, exiting..."
     install_url="https://github.com/aquasecurity/trivy/releases/download/v${INPUT_VERSION}/trivy_${INPUT_VERSION}_Linux-64bit.deb"
     wget $install_url
