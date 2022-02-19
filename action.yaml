@@ -1,14 +1,14 @@
 name: "Trivy"
-author: "Cloudfy9 <contact@cloudfy9.com>"
+author: "Cloudfy9"
 description: "GitHub action to scan docker images for vulnerability issues using trivy."
 inputs:
   image_name:
     description: "This input contains the docker images to scan"
     required: true
-  version:
-    description: "This input contains the trivy version"
+  scan_type:
+    description: "This input contains the scan type e.g. image, repository etc..."
     required: false
-    default: "0.23.0"
+    default: "image"
   format:
     description: "This input contains the scan output format e.g. table or json"
     required: false
@@ -16,11 +16,14 @@ inputs:
   severity:
     description: "This input contains the comma separated list of severities e.g. UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL"
     required: false
-    default: "HIGH,CRITICAL"
-  additional_options:
-    description: "This input contains the additional optional parameters e.g. --exit-code 128 --vuln-type os,library"
+  exit_code:
+    description: "This input contains the exit code in case vulnerabilies found"
     required: false
-    default: "--exit-code 128 --vuln-type os,library"
+    default: "128"
+  vuln_type:
+    description: "This input contains the vulnerability types to scan for"
+    required: false
+    default: "os,library"
 branding:
   icon: "camera"
   color: "red"

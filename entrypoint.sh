@@ -13,25 +13,27 @@ function exitScript()
     exit 1
 }
 
-#############################################
-##### function to download trivy binary #####
-#############################################
-function download_trivy()
-{
-    [ -z "${INPUT_VERSION}" ] && exitScript "please pass trivy version with <version> input, exiting..."
-    _install_url="https://github.com/aquasecurity/trivy/releases/download/v${INPUT_VERSION}/trivy_${INPUT_VERSION}_Linux-64bit.rpm"
-    rpm -Uvh ${_install_url} || exitScript "Failed to install trivy version ${INPUT_VERSION}, exiting..."
-    echo -e "${CYAN}[$SUCCESS] trivy installed ${RESET}"
-}
-
 #########################################
 ##### function to scan docker image #####
 #########################################
 function scan_image()
 {
-  [ -z "${INPUT_IMAGE_NAME}" ] && exitScript "please pass docker image to scan for vulnerabilities, exiting..."
-  [ -z "${INPUT_SEVERITY}" ] && exitScript "please pass valid severity types(HIGH, CRITICAL, MEDIUM, LOW), exiting..."
-  trivy image --severity ${INPUT_SEVERITY} ${INPUT_ADDITIONAL_OPTIONS} $INPUT_IMAGE_NAME || exitScript "trivy found vulnerabilities in docker image ${INPUT_IMAGE_NAME}, exiting..."
+  if [ "${INPUT_SCAN_TYPE}" == "image" ]; then
+     [ -z "${INPUT_IMAGE_NAME}" ] && exitScript "Please pass docker image name with image_name input, exiting..."
+     trivy_input="${INPUT_IMAGE_NAME}"
+     error_mmessage="trivy found vulnerabilities in docker image ${INPUT_IMAGE_NAME}, exiting..."
+  else
+     exitScript "Please pass supported scan type(image,repository), exiting..."
+  fi
+
+  trivy_arguments=""
+
+  [ "${INPUT_EXIT_CODE}" ] && trivy_arguments="${trivy_arguments} --exit-code ${INPUT_EXIT_CODE}"
+  [ "${INPUT_SEVERITY}" ] && trivy_arguments="${trivy_arguments} --severity ${INPUT_SEVERITY}"
+  [ "${INPUT_VULN_TYPE}" ] && trivy_arguments="${trivy_arguments} --vuln-type ${INPUT_VULN_TYPE}"
+  [ "${INPUT_FORMAT}" ] && trivy_arguments="${trivy_arguments} --format ${INPUT_FORMAT}"
+
+  trivy ${{INPUT_SCAN_TYPE} ${trivy_arguments} ${trivy_input} || exitScript "${error_mmessage}"
   echo -e "${CYAN}[$SUCCESS] trivy scan completed"
   echo -e "${GREEN} Congratulations!!! Trivy found no vulnerability issues. ${RESET}"
 }
@@ -43,5 +45,4 @@ GREEN='\033[0;32m'
 SUCCESS='\u2714'
 FAILED='\u274c'
 
-download_trivy
 scan_image
