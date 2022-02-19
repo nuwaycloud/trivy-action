@@ -4,18 +4,10 @@ LABEL "com.cloudfy9.image.name"="ghcr.io/cfy9/trivy" \
       "com.cloudfy9.image.description"="Creates trivy docker image" \
       "com.cloudfy9.image.owner"="cloudfy9"
 
-USER root
-
-RUN microdnf install -y shadow-utils \
-    && groupadd trivy \
-    && useradd trivy -g trivy \
-    && mkdir -p /apps/trivy \
-    && chown -R trivy:trivy /apps/trivy
+RUN mkdir -p /apps/trivy
 
 COPY "entrypoint.sh" "/apps/trivy/entrypoint.sh"
 
 WORKDIR /apps/trivy
-
-USER trivy
 
 ENTRYPOINT ["/apps/trivy/entrypoint.sh"]
