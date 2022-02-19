@@ -11,6 +11,9 @@ jobs:
     runs-on: ubuntu-latest
     name: trivy_github_action
     steps:
+      - name: Code Checkout
+        uses: actions/checkout@v2
+        
       - name: Run ShellCheck
         uses: cfy9/shellcheck-action@v0.0.4
         with:
