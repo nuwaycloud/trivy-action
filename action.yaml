@@ -24,16 +24,7 @@ inputs:
 branding:
   icon: "camera"
   color: "red"
+
 runs:
-  using: "composite"
-  steps:
-    - name: Run Trivy Scan
-      shell: bash
-      run: ${{ github.action_path }}/trivy.sh
-      env:
-        INPUT_IMAGE_NAME: ${{ inputs.image_name }}
-        INPUT_VERSION: ${{ inputs.version }}
-        INPUT_FORMAT: ${{ inputs.format }}
-        INPUT_SEVERITY: ${{ inputs.severity }}
-        INPUT_ADDITIONAL_OPTIONS: ${{ inputs.additional_options }}
-        ACTION_PATH: ${{ github.action_path }}
+  using: 'docker'
+  image: 'Dockerfile'

@@ -30,26 +30,10 @@ function download_trivy()
 function scan_image()
 {
   [ -z "${INPUT_IMAGE_NAME}" ] && exitScript "please pass docker image to scan for vulnerabilities, exiting..."
-  [ ! -z "${INPUT_SEVERITY}" ] && severity="--severity ${INPUT_SEVERITY}"
-  trivy image ${severity} ${INPUT_ADDITIONAL_OPTIONS} $INPUT_IMAGE_NAME || exitScript "trivy found vulnerabilities in docker image ${INPUT_IMAGE_NAME}, exiting..."
+  [ -z "${INPUT_SEVERITY}" ] && exitScript "please pass valid severity types(HIGH, CRITICAL, MEDIUM, LOW), exiting..."
+  trivy image --severity ${INPUT_SEVERITY} ${INPUT_ADDITIONAL_OPTIONS} $INPUT_IMAGE_NAME || exitScript "trivy found vulnerabilities in docker image ${INPUT_IMAGE_NAME}, exiting..."
   echo -e "${CYAN}[$SUCCESS] trivy scan completed"
   echo -e "${GREEN} Congratulations!!! Trivy found no vulnerability issues. ${RESET}"
-}
-
-#######################################
-##### function to scan filesystem #####
-#######################################
-function scan_filesystem()
-{
-   echo "Inside filesystem function"
-}
-
-###########################################
-##### function to scan git repository #####
-###########################################
-function scan_repository()
-{
-   echo "Inside git repository scan function"
 }
 
 RED='\033[0;31m'
@@ -60,17 +44,4 @@ SUCCESS='\u2714'
 FAILED='\u274c'
 
 download_trivy
-
-case "${INPUT_TARGET}" in
-  "image")
-     scan_image
-     ;;
-  "filesystem")
-     scan_filesystem
-     ;;
-  "repository")
-     scan_repository
-     ;;
-  *)
-     exitScript "Please pass supported target scan e.g. image|repository|filesystem, exiting..."
-esac
+scan_image
