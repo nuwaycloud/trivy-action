@@ -10,7 +10,7 @@ RUN microdnf install -y shadow-utils \
     && mkdir -p /apps/trivy \
     && chown -R trivy:trivy /apps/trivy
 
-COPY entrypoint /apps/trivy/entrypoint.sh
+COPY entrypoint.sh /apps/trivy/entrypoint.sh
 
 WORKDIR /apps/trivy
 
