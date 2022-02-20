@@ -26,14 +26,12 @@ function scan_image()
      exitScript "Please pass supported scan type(image,repository), exiting..."
   fi
 
-  trivy_arguments=""
-
   [ "${INPUT_EXIT_CODE}" ] && trivy_arguments="${trivy_arguments} --exit-code ${INPUT_EXIT_CODE}"
   [ "${INPUT_SEVERITY}" ] && trivy_arguments="${trivy_arguments} --severity ${INPUT_SEVERITY}"
   [ "${INPUT_VULN_TYPE}" ] && trivy_arguments="${trivy_arguments} --vuln-type ${INPUT_VULN_TYPE}"
   [ "${INPUT_FORMAT}" ] && trivy_arguments="${trivy_arguments} --format ${INPUT_FORMAT}"
 
-  trivy ${{INPUT_SCAN_TYPE} ${trivy_arguments} ${trivy_input} || exitScript "${error_mmessage}"
+  trivy ${INPUT_SCAN_TYPE} ${trivy_arguments} ${trivy_input} || exitScript "${error_mmessage}"
   echo -e "${CYAN}[$SUCCESS] trivy scan completed"
   echo -e "${GREEN} Congratulations!!! Trivy found no vulnerability issues. ${RESET}"
 }
@@ -44,5 +42,7 @@ CYAN='\033[0;36m'
 GREEN='\033[0;32m'
 SUCCESS='\u2714'
 FAILED='\u274c'
+
+trivy_argumments=""
 
 scan_image
