@@ -17,8 +17,8 @@ on:
     branches:
       - main
 jobs:
-  shellcheck:
-    name: Trivy
+  trivy-scan:
+    name: trivy-scan
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -28,13 +28,13 @@ jobs:
 
 This action supports the following inputs:
 
-|       Inputs         |                  Description                   |   Required  |   Default Value                           |
-|----------------------|------------------------------------------------|-------------|-------------------------------------------|
-|  image_name          | contains the image name to scan                |     yes     |                 -                         |
-|  severity            | contains the severity type e.g. HIGH, MEDIUM   |     no      |         HIGH, CRITICAL                    |
-|  format              | contains the output format e.g. table or json  |     no      |             table                         |
-|  version             | contains the trivy version to install          |     no      |             0.1.6                         |
-|  additional_options  | contains additional trivy supported options    |     no      |   --exit-code 128 --vuln-type os,library  |
+|       Inputs         |                  Description                                   |   Required  |   Default Value  |
+|----------------------|----------------------------------------------------------------|-------------|------------------|
+|  image_name          | contains the image name to scan                                |     yes     |       -          |
+|  severity            | contains the severity type e.g. HIGH, MEDIUM                   |     no      |  HIGH, CRITICAL  |
+|  format              | contains the output format e.g. table or json                  |     no      |      table       |
+|  vuln_type           | contains the type of vulnerability you want to scan            |     no      |   os,library     |
+|  exit_code           | contains trivy command exit code in case vulnerability found   |     no      |       128        |
 
 ```yaml
 name: GitHub Workflow
@@ -43,20 +43,20 @@ on:
     branches:
       - main
 jobs:
-  shellcheck:
-    name: Trivy
+  trivy-scan:
+    name: trivy-scan
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
     - name: Run Trivy
-      uses: cfy9/trivy-action@v0.0.1
+      uses: cfy9/trivy-action@v0.0.2
       with:
         image_name: nginx
         format: "json"
 ```
 
 ## Contributing
-We would love you to contribute to `@cfy9/shellcheck-action`, pull requests are welcome! Please see the [CONTRIBUTING.md](CONTRIBUTING.md) for more information.
+We would love you to contribute to `@cfy9/trivy-action`, pull requests are welcome! Please see the [CONTRIBUTING.md](CONTRIBUTING.md) for more information.
 
 ## License
 The scripts and documentation in this project are released under the [MIT License](LICENSE)
