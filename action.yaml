@@ -1,4 +1,4 @@
-name: "Trivy"
+name: "Trivy GitHub Action"
 author: "Cloudfy9"
 description: "GitHub action to scan docker images for vulnerability issues using trivy."
 inputs:
