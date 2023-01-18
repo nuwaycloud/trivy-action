@@ -20,7 +20,7 @@ jobs:
           version: v0.8.0
 
       - name: Dockerfile Linting
-        uses: hadolint/hadolint-action@v1.6.0
+        uses: hadolint/hadolint-action@v3.1.0
         with:
           dockerfile: Dockerfile
 
